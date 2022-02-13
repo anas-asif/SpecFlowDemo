@@ -1,0 +1,9 @@
+Field Name,Type,Mandatory,Specifics
+First Name,String,T,F
+Last Name,String,T,F
+Job Title,String,F,SQA
+Account Name,Lookup,F,James Wittrell
+Mobile Phone,Number,F,F
+Fax,Number,F,F
+Preferred Method of Contact,Dropdown,F,F
+Email,email,F,F

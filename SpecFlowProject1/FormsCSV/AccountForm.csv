@@ -1,0 +1,10 @@
+Field Name,Type,Mandatory,Specifics
+Account Name,String,T,F
+Category,Dropdown,F,F
+Phone,Number,F,F
+Fax,Number,F,F
+Website,String,F,F
+Parent Account,Lookup,F,F
+Ticker Symbol,String,T,F
+Relationship Type,Dropdown,F,F
+Product Price List,Lookup,F,Retail

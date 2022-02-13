@@ -1,99 +1,129 @@
-﻿using System;
+﻿using NUnit.Framework;
+using SpecFlowProject1.Helper;
+using SpecFlowProject1.Utilities;
+using System;
 using TechTalk.SpecFlow;
 
 namespace SpecFlowProject1.Steps
 {
     [Binding]
-    public class ContactsSteps
+    public class ContactsSteps : Hooks.Setup
     {
+        SeleniumWaits wait;
+        CSVnForms_Ops forms;
+
+        [Given(@"User has session")]
         [Given(@"User is Logged in")]
+        [Given(@"User is already logged in")]
         public void GivenUserIsLoggedIn()
         {
-            ScenarioContext.Current.Pending();
+            wait = new SeleniumWaits();
+            try { wait.specifiedElementText(client, "Contacts"); } catch (Exception e) { String error = e.Message; }
         }
-        
-        [Given(@"User has session")]
-        public void GivenUserHasSession()
+
+
+
+
+        [Given(@"User is on (.*) list screen")]
+        public void GivenUserIsOnContactListScreen(String p1)
         {
-            ScenarioContext.Current.Pending();
+            wait = new SeleniumWaits();
+            try { wait.specifiedElementText(client, p1); }
+            catch (Exception e)
+            {
+                String error = e.Message;
+            }
         }
-        
-        [Given(@"User is on contact list screen")]
-        public void GivenUserIsOnContactListScreen()
+
+        [Given(@"User Clicks on (.*) from left menu under (.*) heading")]
+        public void WhenUserClicksOnContactsFromLeftMenu(String p1, String p2)
         {
-            ScenarioContext.Current.Pending();
+            xrmApp.Navigation.OpenSubArea(p2, p1);
         }
-        
-        [Given(@"User is logged in and on Dashboard")]
-        public void GivenUserIsLoggedInAndOnDashboard()
+
+        [When(@"Clicks on (.*)")]
+        [When(@"user clicks (.*) button")]
+        public void WhenUserClicksNewButton(String p1)
         {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"User Clicks on Contacts from left menu")]
-        public void WhenUserClicksOnContactsFromLeftMenu()
-        {
+            xrmApp.CommandBar.ClickCommand(p1);
+
 
         }
-        
-        [When(@"user clicks New button")]
-        public void WhenUserClicksNewButton()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
+
         [When(@"user clicks submit on Empty form")]
         public void WhenUserClicksSubmitOnEmptyForm()
         {
-            ScenarioContext.Current.Pending();
+            forms = new CSVnForms_Ops(client, xrmApp);
+            xrmApp.ThinkTime(3000);
+            Assert.IsTrue(forms.save(),forms.Message);
         }
-        
-        [When(@"Mandatory field are filled and saved")]
-        public void WhenMandatoryFieldAreFilledAndSaved()
+        [When(@"User enters newly created Lead's (.*) in search field")]
+        public void search(String p1) {
+            forms = new CSVnForms_Ops(client,xrmApp);
+            forms.search(p1);
+
+            xrmApp.ThinkTime(3000);
+
+        }
+
+        [When(@"Mandatory field are filled and saved using (.*)")]
+        public void WhenMandatoryFieldAreFilledAndSaved(String p1)
         {
-            ScenarioContext.Current.Pending();
+            forms = new CSVnForms_Ops(client, xrmApp);
+            Assert.IsTrue(forms.fillAllFields(p1), forms.Message);
         }
-        
-        [When(@"user enters Newly created contact name in search field")]
-        public void WhenUserEntersNewlyCreatedContactNameInSearchField()
+
+        [When(@"User opens the record")]
+        public void openRecordVerify() {
+            wait = new SeleniumWaits();
+            try { wait.specifiedElementText(client, "Summary"); } catch (Exception e) { String error = e.Message; }
+
+        }
+
+
+
+        [Then(@"Search result appears with Lead's (.*)")]
+        public void verifySearch(String p1)
         {
-            ScenarioContext.Current.Pending();
+            try {
+                forms.verifySearch(p1);
+
+            } catch (Exception e) { }
         }
-        
-        [When(@"clicks search")]
-        public void WhenClicksSearch()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
+
         [Then(@"Contact list view loads up")]
+        [Then(@"My Open Lead view list loads up")]
         public void ThenContactListViewLoadsUp()
         {
-            ScenarioContext.Current.Pending();
+            wait.specifiedElementText(client, "New");
         }
-        
-        [Then(@"New contact form shows up")]
-        public void ThenNewContactFormShowsUp()
+
+        [Then(@"New contact form shows up using (.*)")]
+        public void ThenNewContactFormShowsUp(String p1)
         {
-            ScenarioContext.Current.Pending();
+            forms = new CSVnForms_Ops(client, xrmApp);
+            Assert.IsTrue(forms.validateAllFields(p1), forms.Message);
         }
-        
-        [Then(@"Form shows validation")]
-        public void ThenFormShowsValidation()
+
+        [Then(@"Form shows validation using (.*)")]
+        public void ThenFormShowsValidation(String p1)
         {
-            ScenarioContext.Current.Pending();
+            forms = new CSVnForms_Ops(client, xrmApp);
+            Assert.IsTrue(forms.checkMandatoryValidation(p1),forms.Message);
         }
-        
+
         [Then(@"Form is submitted successfully")]
         public void ThenFormIsSubmittedSuccessfully()
         {
-            ScenarioContext.Current.Pending();
+            forms.save();
+            xrmApp.ThinkTime(6000);
         }
-        
-        [Then(@"Newly created contact shows up on list view")]
-        public void ThenNewlyCreatedContactShowsUpOnListView()
+
+        [Then(@"Lead is qualified as an (.*)")]
+        public void confirmConversion(String p1)
         {
-            ScenarioContext.Current.Pending();
+            wait = new SeleniumWaits();
+            try { wait.withXpath(client, "//span[text()='"+p1+"']"); } catch (Exception e) { String error = e.Message; }
         }
     }
 }

@@ -1,0 +1,4 @@
+Field Name,Type,Mandatory,Specifics
+Topic,String,T,F
+First Name,String,F,F
+Last Name,String,F,F

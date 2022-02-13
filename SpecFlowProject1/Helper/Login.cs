@@ -32,26 +32,14 @@ namespace SpecFlowProject1.Helper
 
             try
             {
-
-
-
-
-
                 // Check whether browser is asking to enter Username
                 waiting.withXpath(client, "//*[@id='i0116']");
                 xrmApp.ThinkTime(2000);
                 client.Browser.Driver.FindElement(By.Id("i0116")).SendKeys(user);
 
-
-
-
-
                 client.Browser.Driver.FindElement(By.Id("i0116")).SendKeys(Keys.Enter);
 
                 xrmApp.ThinkTime(3000);
-
-
-
 
                 // Check whether browser is asking to enter Password
                 waiting.withXpath(client, "//*[@type='password']");
@@ -75,12 +63,12 @@ namespace SpecFlowProject1.Helper
 
                 waiting.withXpath(client, "//iframe[@id='AppLandingPage']");
                 client.Browser.Driver.SwitchTo().Frame("AppLandingPage");
-                waiting.specifiedElementText(client, "DryDocks Global Offshore");
+                waiting.specifiedElementText(client, "Dynamics 365 — custom");
                 client.Browser.Driver.SwitchTo().DefaultContent();
 
 
 
-                xrmApp.Navigation.OpenApp("DryDocks Global Offshore");
+                xrmApp.Navigation.OpenApp("Dynamics 365 — custom");
 
                 return true;
             }
